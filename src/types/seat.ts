@@ -1,6 +1,7 @@
+import { Type } from "./type";
+
 export interface Seat {
   number: number;
-  price: number;
   isReserved: boolean;
-  type: string;
+  type: Type | null;
 }

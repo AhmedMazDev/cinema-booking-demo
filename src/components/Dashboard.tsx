@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { Button, Flex, Input, Text } from "@chakra-ui/react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Seat } from "../types/seat";
-import { Type } from "../types/type";
+import { Type, Types } from "../types/type";
 import Seats from "./Seats";
+import TypesManager from "./TypesManager";
 
 interface DashboardProps {
   rows: number;
@@ -19,6 +21,15 @@ const Dashboard: React.FC<DashboardProps> = ({
   const [seats, setSeats] = useState<Seat[]>([]);
   const [types, setTypes] = useState<Type[]>([]);
   const [typeData, setTypeData] = useState<Type>();
+  const [allTypes, setAllTypes] = useState<Type[]>([]);
+
+  useEffect(() => {
+    fillAllTypes();
+  }, []);
+
+  useEffect(() => {
+    console.log("allTypes : ", allTypes);
+  }, [allTypes]);
 
   useEffect(() => {
     console.log("seats : ", seats);
@@ -28,13 +39,29 @@ const Dashboard: React.FC<DashboardProps> = ({
     console.log("types : ", types);
   }, [types]);
 
+  const fillAllTypes = useCallback(() => {
+    //fill the types
+    const typesToFill = Array.from(
+      { length: Object.values(Types).length },
+      (_, i) => {
+        return {
+          name: Object.values(Types)[i],
+          price: 0,
+          color: "#626262",
+          type: Object.values(Types)[i],
+        } as Type;
+      }
+    );
+    setAllTypes(typesToFill);
+  }, []);
+
   const generateSeats = () => {
     const array = Array.from({ length: columns * rows }, (_, i) => {
       return {
         number: i + 1,
         price: 0,
         isReserved: false,
-        type: "Regular",
+        type: null,
       } as Seat;
     });
     setSeats(array);
@@ -47,82 +74,41 @@ const Dashboard: React.FC<DashboardProps> = ({
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        gap: "20px",
-      }}
-    >
-      <h1> Dashboard : </h1>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          gap: "20px",
-        }}
-      >
-        <label>select rows : </label>
-        <input
+    <Flex direction={"column"} align="center" w="100%" gap={8}>
+      <Text fontSize={30}> Dashboard : </Text>
+      <Flex align={"center"} gap={8}>
+        <Text w="100%" fontWeight={"bold"} fontSize={15}>
+          select rows :{" "}
+        </Text>
+        <Input
           type={"number"}
           value={rows}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             setRows(parseInt(e.target.value));
           }}
         />
-        <label>select columns : </label>
-        <input
+        <Text w="100%" fontWeight={"bold"} fontSize={15}>
+          select columns :
+        </Text>
+        <Input
           type={"number"}
           value={columns}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             setColumns(parseInt(e.target.value));
           }}
         />
-        <button
-          onClick={generateSeats}
-          style={{
-            background: "green",
-          }}
-        >
+        <Button onClick={generateSeats} w="100%" colorScheme="messenger">
           Generate seats
-        </button>
-      </div>
-      <p>Add type : </p>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          gap: "20px",
-        }}
-      >
-        <label>Name : </label>
-        <input
-          type={"text"}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            setTypeData({ ...typeData, name: e.target.value } as Type);
-          }}
-        />
-        <label>Price : </label>
-        <input
-          type={"text"}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            setTypeData({
-              ...typeData,
-              price: parseInt(e.target.value),
-            } as Type);
-          }}
-        />
-        <button onClick={addType}>Add type</button>
-      </div>
+        </Button>
+      </Flex>
+      <TypesManager types={types} setTypes={setTypes} allTypes={allTypes} />
       <Seats
         seats={seats}
         columns={columns}
         setSeats={setSeats}
         types={types}
       />
-    </div>
+    </Flex>
   );
 };
 

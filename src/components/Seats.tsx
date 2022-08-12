@@ -1,3 +1,4 @@
+import { Box, Button, Flex, Grid, Select, Text } from "@chakra-ui/react";
 import clsx from "clsx";
 import { useEffect, useState } from "react";
 import { Seat } from "../types/seat";
@@ -57,8 +58,7 @@ const Seats: React.FC<SeatsProps> = ({ seats, columns, setSeats, types }) => {
     selectedSeats.forEach((seat) => {
       const index = newSeats.findIndex((s) => s.number === seat.number);
       if (index !== -1) {
-        newSeats[index].type = type?.name!;
-        newSeats[index].price = type?.price!;
+        newSeats[index].type = type!;
       }
     }),
       setSeats(newSeats);
@@ -66,28 +66,27 @@ const Seats: React.FC<SeatsProps> = ({ seats, columns, setSeats, types }) => {
   };
 
   return (
-    <div
-      style={{
-        width: "700px",
-        height: "500px",
-        display: "flex",
-        flexDirection: "column",
-        gap: "20px",
-      }}
-    >
-      seats component
-      <p>you have selected this seats : </p>
-      <div>{JSON.stringify(selectedSeats)}</div>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          gap: "20px",
-        }}
-      >
-        <button onClick={reserveSeats}>Make seats reserved</button>
-        <div>
-          <select
+    <Flex direction={"column"} align="center" justify={"center"} my={4}>
+      <Text fontSize={"15"} fontWeight="bold">
+        you have selected this seats numbers :{" "}
+      </Text>
+      <Flex gap="4">
+        {selectedSeats.map((seat) => (
+          <Text>{seat.number}</Text>
+        ))}
+      </Flex>
+      <Flex gap="8" align={"center"}>
+        <Button
+          onClick={reserveSeats}
+          disabled={selectedSeats.length === 0}
+          colorScheme="whatsapp"
+        >
+          Make seats reserved
+        </Button>
+        <Flex gap="8" my="4" align={"center"}>
+          <Text w="100%">Select Type : </Text>
+          <Select
+            value={type?.name}
             onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
               setType(types.find((t) => t.name === e.target.value));
             }}
@@ -97,38 +96,75 @@ const Seats: React.FC<SeatsProps> = ({ seats, columns, setSeats, types }) => {
                 {type.name}
               </option>
             ))}
-          </select>
-          <button onClick={changeType}>Change Type</button>
-        </div>
-      </div>
-      <div
-        style={{
-          marginTop: "20px",
-          display: "grid",
-          gridTemplateColumns: `repeat(${columns}, minmax(100px, 1fr))`,
-          gap: "10px",
-          width: "100%",
-          height: "100%",
-          overflow: "auto",
-        }}
+          </Select>
+          <Button
+            onClick={changeType}
+            colorScheme="orange"
+            width={"100%"}
+            disabled={selectedSeats.length === 0}
+          >
+            Change Type
+          </Button>
+        </Flex>
+      </Flex>
+      <Grid
+        gridTemplateColumns={`repeat(${columns}, 1fr)`}
+        gap={8}
+        overflow={"auto"}
+        bg="#222222"
+        w="800px"
+        h="500px"
+        padding={"5"}
       >
         {seats.map((seat, index) => {
           return (
-            <div
-              key={index}
-              className={clsx(
-                "seat",
-                seat.isReserved ? "occupied" : "",
-                selectedSeats.some((s) => s.number === seat.number)
-                  ? "selected"
-                  : ""
+            <>
+              {seat.isReserved ? (
+                <Box
+                  w="20px"
+                  h="20px"
+                  bg={"grey"}
+                  display="inline-block"
+                  borderTopLeftRadius={"10px"}
+                  borderTopRightRadius={"10px"}
+                ></Box>
+              ) : (
+                <Box
+                  w="20px"
+                  h="20px"
+                  bg={
+                    selectedSeats.some((s) => s.number === seat.number)
+                      ? "yellow"
+                      : seat.type?.color || "white"
+                  }
+                  onClick={
+                    seat.isReserved ? () => {} : () => handleSeatClick(seat)
+                  }
+                  cursor="pointer"
+                  display="inline-block"
+                  borderTopLeftRadius={"10px"}
+                  borderTopRightRadius={"10px"}
+                ></Box>
               )}
-              onClick={seat.isReserved ? () => {} : () => handleSeatClick(seat)}
-            ></div>
+
+              {/* <div
+                key={index}
+                className={clsx(
+                  "seat",
+                  seat.isReserved ? "occupied" : "",
+                  selectedSeats.some((s) => s.number === seat.number)
+                    ? "selected"
+                    : ""
+                )}
+                onClick={
+                  seat.isReserved ? () => {} : () => handleSeatClick(seat)
+                }
+              ></div> */}
+            </>
           );
         })}
-      </div>
-    </div>
+      </Grid>
+    </Flex>
   );
 };
 

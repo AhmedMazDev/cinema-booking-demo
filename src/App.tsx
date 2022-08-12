@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import "./App.css";
 import Dashboard from "./components/Dashboard";
 
 function App() {
@@ -12,14 +11,12 @@ function App() {
   }, [rows, columns]);
 
   return (
-    <div>
-      <Dashboard
-        columns={columns}
-        rows={rows}
-        setColumns={setColumns}
-        setRows={setRows}
-      />
-    </div>
+    <Dashboard
+      columns={columns}
+      rows={rows}
+      setColumns={setColumns}
+      setRows={setRows}
+    />
   );
 }
 
