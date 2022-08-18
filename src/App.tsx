@@ -1,22 +1,17 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Dashboard from "./components/Dashboard";
+import Legend from "./components/Legend";
+import VenuMap from "./components/VenuMap";
+import AppContext from "./context/appContext";
+import AppContextProvider from "./context/AppContextProvider";
 
 function App() {
-  const [isDashboard, setIsDashboard] = useState<boolean>(false);
-  const [rows, setRows] = useState<number>(0);
-  const [columns, setColumns] = useState<number>(0);
-
-  useEffect(() => {
-    console.log("rows and columns : ", rows, "   ", columns);
-  }, [rows, columns]);
-
   return (
-    <Dashboard
-      columns={columns}
-      rows={rows}
-      setColumns={setColumns}
-      setRows={setRows}
-    />
+    <AppContextProvider>
+      <Dashboard />
+      <Legend />
+      <VenuMap />
+    </AppContextProvider>
   );
 }
 

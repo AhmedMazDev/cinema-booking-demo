@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   Flex,
   FormControl,
@@ -13,19 +12,18 @@ import {
   ModalHeader,
   ModalOverlay,
   Select,
-  Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import AppContext from "../context/appContext";
 import { Type, Types } from "../types/type";
+import TypesTable from "./TypesTable";
 
-interface TypesProps {
-  allTypes: Type[];
-  types: Type[];
-  setTypes: (types: Type[]) => void;
-}
+interface TypesProps {}
 
-const TypesManager: React.FC<TypesProps> = ({ setTypes, types, allTypes }) => {
+const TypesManager: React.FC<TypesProps> = () => {
+  const { types, allTypes, setTypes, setAllTypes } = useContext(AppContext);
+
   const { isOpen, onClose, onOpen } = useDisclosure();
 
   const [availableTypes, setAvailableTypes] = useState<Type[]>([]);
@@ -33,21 +31,19 @@ const TypesManager: React.FC<TypesProps> = ({ setTypes, types, allTypes }) => {
     name: "",
     price: 0,
     color: "#626262",
-    type: Types.Regular,
+    type: Types.REGULAR,
   });
 
   useEffect(() => {
     const filteredTypes: Type[] = allTypes.filter(
       (type) => !types.some((t) => t.type === type.type)
     );
-    console.log("first filteredTypes : ", filteredTypes);
     setAvailableTypes(filteredTypes);
   }, [allTypes, types]);
 
   const onAddType = () => {
     const newTypes: Type[] = [...types, newTypeData];
     setTypes(newTypes);
-    onClose();
     setNewTypeData({
       name: "",
       price: 0,
@@ -56,45 +52,11 @@ const TypesManager: React.FC<TypesProps> = ({ setTypes, types, allTypes }) => {
     });
   };
 
-  const onDeleteType = (type: Type) => {
-    const newTypes = types.filter((t) => t.type !== type.type);
-    setTypes(newTypes);
-  };
-
   return (
     <Flex direction={"column"} gap={8}>
-      <Text fontSize={30}>Types Manager : </Text>
-      <Button onClick={onOpen}>Add Type</Button>
-      <Flex direction={"column"} gap="8">
-        {types.length !== 0 && (
-          <Flex gap="8">
-            <Text fontSize={15} fontWeight="bold">
-              Name :
-            </Text>
-            <Text fontSize={15} fontWeight="bold">
-              Price :
-            </Text>
-            <Text fontSize={15} fontWeight="bold">
-              Color :
-            </Text>
-            <Text fontSize={15} fontWeight="bold">
-              Type :
-            </Text>
-          </Flex>
-        )}
-        {types?.map((type, i) => (
-          <Flex key={i} align="center" gap="8">
-            <Text fontWeight={"bold"}>{type.name}</Text>
-            <Text>{type.price}</Text>
-            <Box backgroundColor={type.color} w="20px" h="20px"></Box>
-            <Text>{type.type}</Text>
-            <Button onClick={() => onDeleteType(type)} colorScheme="red">
-              Delete
-            </Button>
-          </Flex>
-        ))}
-      </Flex>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Button onClick={onOpen}>Types Manager</Button>
+
+      <Modal isOpen={isOpen} onClose={onClose} size="4xl">
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Add Type</ModalHeader>
@@ -151,11 +113,14 @@ const TypesManager: React.FC<TypesProps> = ({ setTypes, types, allTypes }) => {
                 />
               </FormControl>
             </Flex>
+            <Flex direction={"column"} gap="8">
+              {types.length !== 0 && <TypesTable />}
+            </Flex>
           </ModalBody>
 
           <ModalFooter>
             <Button colorScheme="blue" mr={3} onClick={onAddType}>
-              Add
+              Add Type
             </Button>
             <Button mr={3} onClick={onClose}>
               Close

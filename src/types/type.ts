@@ -6,9 +6,9 @@ export interface Type {
 }
 
 export enum Types {
-  Regular = "Regular",
-  Royal = "Royal",
+  REGULAR = "Regular",
+  ROYAL = "Royal",
   VIP = "VIP",
-  Special = "Special",
-  Stand = "Stand",
+  SPECIAL = "Special",
+  STAND = "Stand",
 }
