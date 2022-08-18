@@ -1,7 +1,6 @@
 import { Box, Button, Flex, Grid, Icon, Select, Text } from "@chakra-ui/react";
 import clsx from "clsx";
 import { useContext, useEffect, useState } from "react";
-import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
 import { Seat } from "../types/seat";
 import { Type } from "../types/type";
 import { MdChair, MdChairAlt } from "react-icons/md";
