@@ -20,7 +20,6 @@ import { Positions } from "../types/map";
 import AppContext from "../context/appContext";
 import { Table } from "../types/table";
 import { Type } from "../types/type";
-import rn from "random-number";
 import { nanoid } from "nanoid";
 
 const TablesManager: React.FC = () => {
@@ -28,13 +27,13 @@ const TablesManager: React.FC = () => {
   const {
     topTables,
     leftTables,
-    types,
     bottomTables,
     rightTables,
     setTopTables,
     setBottomTables,
     setLeftTables,
     setRightTables,
+    types,
     setSelectedTables,
     selectedTables,
   } = useContext(AppContext);
@@ -44,14 +43,6 @@ const TablesManager: React.FC = () => {
   const [tablePosition, setTablePosition] = useState("Top");
 
   const [type, setType] = useState<Type>();
-
-  useEffect(() => {
-    console.log("position : ", tablePosition);
-  }, [tablePosition]);
-
-  useEffect(() => {
-    console.log("type : ", type);
-  }, [type]);
 
   const handleTablesGeneration = () => {
     const tables = Array.from({ length: noTables }, (_, i) => {

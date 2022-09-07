@@ -2,7 +2,7 @@ import { ReactNode, useCallback, useEffect, useState } from "react";
 import { Seat } from "../types/seat";
 import { Table } from "../types/table";
 import { Type, Types } from "../types/type";
-import { VenuObject } from "../types/venuObject";
+import { Section } from "../types/section";
 import AppContext from "./appContext";
 
 type AppContextProviderProps = {
@@ -17,14 +17,15 @@ const AppContextProvider: React.FC<AppContextProviderProps> = ({
   const [bottomTables, setBottomTables] = useState<Table[]>([]);
   const [rightTables, setRightTables] = useState<Table[]>([]);
   const [leftTables, setLeftTables] = useState<Table[]>([]);
-  const [topObjects, setTopObjects] = useState<VenuObject[]>([]);
-  const [bottomObjects, setBottomObjects] = useState<VenuObject[]>([]);
-  const [rightObjects, setRightObjects] = useState<VenuObject[]>([]);
-  const [leftObjects, setLeftObjects] = useState<VenuObject[]>([]);
+  const [topSections, setTopSections] = useState<Section[]>([]);
+  const [bottomSections, setBottomSections] = useState<Section[]>([]);
+  const [rightSections, setRightSections] = useState<Section[]>([]);
+  const [leftSections, setLeftSections] = useState<Section[]>([]);
   const [types, setTypes] = useState<Type[]>([]);
   const [allTypes, setAllTypes] = useState<Type[]>([]);
   const [selectedSeats, setSelectedSeats] = useState<Seat[]>([]);
   const [selectedTables, setSelectedTables] = useState<Table[]>([]);
+  const [selectedSections, setSelectedSections] = useState<Section[]>([]);
   const [rows, setRows] = useState<number>(0);
   const [columns, setColumns] = useState<number>(0);
 
@@ -71,10 +72,10 @@ const AppContextProvider: React.FC<AppContextProviderProps> = ({
         bottomTables,
         rightTables,
         leftTables,
-        topObjects,
-        bottomObjects,
-        rightObjects,
-        leftObjects,
+        topSections,
+        bottomSections,
+        rightSections,
+        leftSections,
         types,
         allTypes,
         selectedSeats,
@@ -84,16 +85,18 @@ const AppContextProvider: React.FC<AppContextProviderProps> = ({
         setBottomTables,
         setRightTables,
         setLeftTables,
-        setTopObjects,
-        setBottomObjects,
-        setRightObjects,
-        setLeftObjects,
+        setTopSections,
+        setBottomSections,
+        setRightSections,
+        setLeftSections,
         setTypes,
         setAllTypes,
         setSelectedSeats,
         setSelectedTables,
         setRows,
         setColumns,
+        selectedSections,
+        setSelectedSections,
       }}
     >
       {children}

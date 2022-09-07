@@ -1,6 +1,6 @@
 import { Seat } from "./seat";
 import { Table } from "./table";
-import { VenuObject } from "./venuObject";
+import { Section } from "./section";
 
 export interface MapVenu {
   rows: number;
@@ -10,10 +10,10 @@ export interface MapVenu {
   bottomTables: Table[];
   leftTables: Table[];
   rightTables: Table[];
-  topObjects: VenuObject[];
-  bottomObjects: VenuObject[];
-  leftObjects: VenuObject[];
-  rightObjects: VenuObject[];
+  topObjects: Section[];
+  bottomObjects: Section[];
+  leftObjects: Section[];
+  rightObjects: Section[];
 }
 
 export enum Positions {

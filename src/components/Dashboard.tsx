@@ -5,6 +5,7 @@ import TablesManager from "./TablesManager";
 import SeatsManager from "./SeatsManager";
 import TypesManager from "./TypesManager";
 import VenuMap from "./VenuMap";
+import SectionsManager from "./SectionsManager";
 
 const Dashboard: React.FC = () => {
   return (
@@ -16,6 +17,7 @@ const Dashboard: React.FC = () => {
         <SeatsManager />
         <TypesManager />
         <TablesManager />
+        <SectionsManager />
       </Flex>
     </Flex>
   );
